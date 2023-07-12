@@ -1,0 +1,146 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<div class="container">
+
+    <a href="cart.html" class="btn btn-success mt-5">View cart</a>
+
+    <div class="row mt-5" id="cards">
+
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+
+
+    let data = [
+        {
+            id: 1,
+            name: "nudals",
+            price: 250,
+            qty: 1,
+            description: "i love nudals very nice nudals",
+            image: "uploads/pexels-engin-akyurt-2347311.jpg"
+        },
+        {
+            id: 2,
+            name: "sandwich",
+            price: 300,
+            qty: 1,
+            description: "i love sandwich very nice sandwich",
+            image: "uploads/pexels-rajesh-tp-1600711.jpg"
+        },
+        {
+            id: 3,
+            name: "hotdog",
+            price: 100,
+            qty: 1,
+            description: "i love hotdog very nice hotdog",
+            image: "uploads/pexels-rajesh-tp-1603901.jpg"
+        },
+        {
+            id: 4,
+            name: "panipuri",
+            price: 50,
+            qty: 1,
+            description: "i love panipuri very nice panipuri",
+            image: "uploads/pexels-shahbaz-ansari-13063307.jpg"
+        },
+        {
+            id: 5,
+            name: "burgar",
+            price: 50,
+            qty: 1,
+            description: "i love burger very nice burger",
+            image: "uploads/pexels-valeria-boltneva-1639565.jpg"
+        }
+
+    ];
+
+
+    viewdata();
+    function viewdata() {
+
+        let producatdata = "";
+        let cart = JSON.parse(localStorage.getItem('cart'));
+
+
+        for (let i in data) {
+
+            let check = 0;
+
+            producatdata += `   
+                                            <div class="col-md-4 pb-3">
+                                                <div class="card">
+                                                    <img src="${data[i].image}" class="card-img-top" alt="...">
+                                                    <div class="card-body">
+                                                    <h5 class="card-title">${data[i].name}</h5>
+                                                    <p class="card-text">${data[i].description}</p>
+                                                    <h5 class="card-title">Price :- ${data[i].price}</h5>`
+
+            for (let j in cart) {
+                if (cart[j].name == data[i].name) {
+                    check = 1;
+                }
+            }
+
+            if (check != 1) {
+                producatdata += `<button  onclick="add(${data[i].id})" id='orderexists'  class="btn btn-primary">Add</button>`
+
+            }
+            else {
+                producatdata += `<button  onclick="add(${data[i].id})" id='orderexists'  disabled   class="btn btn-primary">Add</button>`
+
+            }
+            producatdata += `                
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        `
+
+        }
+
+        document.getElementById('cards').innerHTML = producatdata;
+    }
+
+    let addtocart = [];
+    function add(id) {
+        for (let i in data) {
+
+            if (data[i].id == id) {
+                let name = data[i].name;
+                let price = data[i].price;
+                let description = data[i].description;
+                let image = data[i].image;
+
+                let obj = {
+                    name: name,
+                    price: price,
+                    description: description,
+                    qty: 1,
+                    image: image,
+                    id : id  
+                }
+
+                if (localStorage.getItem('cart') === null || localStorage.getItem('cart') === undefined) {
+                    addtocart.push(obj);
+                    localStorage.setItem('cart', JSON.stringify(addtocart));
+                    viewdata();
+                }
+                else {
+                    let val = JSON.parse(localStorage.getItem('cart'));
+                    val.push(obj);
+                    localStorage.setItem('cart', JSON.stringify(val));
+                    viewdata();s
+                }
+
+                alert("Order successfully create");
+
+            }
+
+        }
+    }
+
+
+</script>
